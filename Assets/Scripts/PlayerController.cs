@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     public int jumpForce = 25;
     public int gravityModifier = 10;
+    public long score;
     public ParticleSystem explosionParticle;
     public ParticleSystem dirtParticle;
     public AudioClip jumpAudio;
@@ -37,20 +38,19 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) Jump();
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             _isDashing = !_isDashing;
-            if (_isDashing)
-            {
-                Debug.Log("Dashing activated");
-            }
-            else
-            {
-                Debug.Log("Dashing deactivated");
-            }
         }
-        
+
+        if (!_isGameOver)
+        {
+            score += (long)(Time.deltaTime * (_isDashing ? 2000 : 1000));
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         return _isDashing ? ObstacleSpawnRateFastMin : ObstacleSpawnRateNormalMin;
     }
-    
+
     public float ObstacleSpawnRateMax()
     {
         return _isDashing ? ObstacleSpawnRateFastMax : ObstacleSpawnRateNormalMax;
@@ -90,10 +90,10 @@ public class PlayerController : MonoBehaviour
     {
         explosionParticle.Play();
         _playerAudioSource.PlayOneShot(crashAudio);
-        
+
         _isGameOver = true;
-        Debug.Log("Game Over");
-        
+        Debug.Log($"Game Over, Score={score}");
+
         Death();
     }
 
@@ -101,16 +101,17 @@ public class PlayerController : MonoBehaviour
     {
         if (_isGameOver) return;
         if (!_isOnGround && _isSecondJumpActivated) return;
-        
+
         _playerRigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         _playerAnimator.SetTrigger(JumpTrig);
         _playerAudioSource.PlayOneShot(jumpAudio);
         dirtParticle.Stop();
-        
+
         if (_isOnGround)
         {
-            _isOnGround = false;    
-        } else if (!_isSecondJumpActivated)
+            _isOnGround = false;
+        }
+        else if (!_isSecondJumpActivated)
         {
             _isSecondJumpActivated = true;
         }
