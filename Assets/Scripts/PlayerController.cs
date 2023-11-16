@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource _playerAudioSource;
     
     private bool _isOnGround = true;
+    private bool _isSecondJumpActivated;
     private bool _isGameOver;
     private static readonly int JumpTrig = Animator.StringToHash("Jump_trig");
     private static readonly int DeathTypeINT = Animator.StringToHash("DeathType_int");
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
     private void OnHitTheGround()
     {
         _isOnGround = true;
+        _isSecondJumpActivated = false; 
         dirtParticle.Play();
     }
 
@@ -63,13 +65,21 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (!_isOnGround || _isGameOver) return;
+        if (_isGameOver) return;
+        if (!_isOnGround && _isSecondJumpActivated) return;
         
         _playerRigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         _playerAnimator.SetTrigger(JumpTrig);
         _playerAudioSource.PlayOneShot(jumpAudio);
-        _isOnGround = false;
         dirtParticle.Stop();
+        
+        if (_isOnGround)
+        {
+            _isOnGround = false;    
+        } else if (!_isSecondJumpActivated)
+        {
+            _isSecondJumpActivated = true;
+        }
     }
 
     private void Death()
