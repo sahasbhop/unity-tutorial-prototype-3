@@ -22,11 +22,13 @@ public class PlayerController : MonoBehaviour
     private const float ObstacleSpawnRateFastMax = 1.6f;
     private bool _isOnGround = true;
     private bool _isSecondJumpActivated;
+    private bool _isGameStart;
     private bool _isGameOver;
     private bool _isDashing;
     private static readonly int JumpTrig = Animator.StringToHash("Jump_trig");
     private static readonly int DeathTypeINT = Animator.StringToHash("DeathType_int");
     private static readonly int DeathB = Animator.StringToHash("Death_b");
+    private static readonly int SpeedF = Animator.StringToHash("Speed_f");
 
     private void Start()
     {
@@ -38,6 +40,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!StartGame()) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
@@ -57,6 +61,11 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground")) OnHitTheGround();
         else if (other.gameObject.CompareTag("Obstacle")) OnHitTheObstacle();
+    }
+
+    public bool IsGameStart()
+    {
+        return _isGameStart;
     }
 
     public bool IsGameOver()
@@ -83,7 +92,7 @@ public class PlayerController : MonoBehaviour
     {
         _isOnGround = true;
         _isSecondJumpActivated = false;
-        if (!_isGameOver) dirtParticle.Play();
+        if (_isGameStart && !_isGameOver) dirtParticle.Play();
     }
 
     private void OnHitTheObstacle()
@@ -122,5 +131,21 @@ public class PlayerController : MonoBehaviour
         _playerAnimator.SetInteger(DeathTypeINT, 1);
         _playerAnimator.SetBool(DeathB, true);
         dirtParticle.Stop();
+    }
+
+    private bool StartGame()
+    {
+        if (_isGameStart) return true;
+
+        if (transform.position.x < 0)
+        {
+            transform.Translate(Vector3.right * (3 * Time.deltaTime), Space.World);
+            return false;
+        }
+
+        _isGameStart = true;
+        _playerAnimator.SetFloat(SpeedF, 1.0f);
+        dirtParticle.Play();
+        return true;
     }
 }

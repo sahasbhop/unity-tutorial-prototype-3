@@ -169,6 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacles:
   - {fileID: 6299880457557215746, guid: ade00b9a2ee204db3a7a27a8161715b0, type: 3}
+  - {fileID: 1341224513053655501, guid: 43739b11a5b504f52bf2dfac37128aac, type: 3}
+  - {fileID: 9142354691831360445, guid: 197239a6fd82a442daff7d269a47ca07, type: 3}
+  - {fileID: 4060132933743658090, guid: 04ae3bdc7149e463caf5bd6510b0c773, type: 3}
+  - {fileID: 4656992829808452367, guid: 18280406cc73542dd886bf008e1b375c, type: 3}
+  - {fileID: 1341224513053655501, guid: 43739b11a5b504f52bf2dfac37128aac, type: 3}
 --- !u!198 &164480105 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 9125212449759046732, guid: cb7cd9b0c56a24d49a40784bd3203ae6, type: 3}
@@ -732,6 +737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 25
   gravityModifier: 10
+  score: 0
   explosionParticle: {fileID: 164480105}
   dirtParticle: {fileID: 992695153}
   jumpAudio: {fileID: 8300000, guid: 0f7d0b7c3397f4dac91f20e8a77d2d57, type: 3}
@@ -885,6 +891,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 1438565936, guid: fb82dfb8d1c7044c69afd2486befecb3, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4356800953600124292, guid: fb82dfb8d1c7044c69afd2486befecb3, type: 3}
       propertyPath: m_Name
       value: FX_DirtSplatter
@@ -912,7 +922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f147a01ef442b2345a3546109476c690, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f147a01ef442b2345a3546109476c690, type: 3}
       propertyPath: m_LocalPosition.y

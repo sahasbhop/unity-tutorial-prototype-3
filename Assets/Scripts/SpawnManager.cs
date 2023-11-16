@@ -16,8 +16,11 @@ public class SpawnManager : MonoBehaviour
     {
         if (_playerController.IsGameOver()) return;
 
-        var obstacle = obstacles[Random.Range(0, obstacles.Length)];
-        Instantiate(obstacle, _spawningPosition, obstacle.transform.rotation);
+        if (_playerController.IsGameStart())
+        {
+            var obstacle = obstacles[Random.Range(0, obstacles.Length)];
+            Instantiate(obstacle, _spawningPosition, obstacle.transform.rotation);
+        }
 
         var time = Random.Range(_playerController.ObstacleSpawnRateMin(), _playerController.ObstacleSpawnRateMax());
         Invoke(nameof(Spawn), time);
