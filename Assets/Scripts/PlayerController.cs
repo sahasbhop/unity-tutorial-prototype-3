@@ -82,8 +82,8 @@ public class PlayerController : MonoBehaviour
     private void OnHitTheGround()
     {
         _isOnGround = true;
-        _isSecondJumpActivated = false; 
-        dirtParticle.Play();
+        _isSecondJumpActivated = false;
+        if (!_isGameOver) dirtParticle.Play();
     }
 
     private void OnHitTheObstacle()
@@ -95,7 +95,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Game Over");
         
         Death();
-        dirtParticle.Stop();
     }
 
     private void Jump()
